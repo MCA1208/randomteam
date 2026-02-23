@@ -194,6 +194,41 @@ namespace randomteam
 
             await CompartirEquiposAsync();
         }
+
+        private void OnDragStarting(object sender, DragStartingEventArgs e)
+        {
+            if (sender is BindableObject bindable &&
+                bindable.BindingContext is Jugador jugador)
+            {
+                e.Data.Properties.Add("Jugador", jugador);
+            }
+        }
+        private void OnDropEquipoA(object sender, DropEventArgs e)
+        {
+            if (e.Data.Properties.TryGetValue("Jugador", out var item))
+            {
+                var jugador = item as Jugador;
+
+                if (equipoB.Contains(jugador))
+                {
+                    equipoB.Remove(jugador);
+                    equipoA.Add(jugador);
+                }
+            }
+        }
+        private void OnDropEquipoB(object sender, DropEventArgs e)
+        {
+            if (e.Data.Properties.TryGetValue("Jugador", out var item))
+            {
+                var jugador = item as Jugador;
+
+                if (equipoA.Contains(jugador))
+                {
+                    equipoA.Remove(jugador);
+                    equipoB.Add(jugador);
+                }
+            }
+        }
     }
 
 }

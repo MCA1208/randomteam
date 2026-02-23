@@ -118,7 +118,7 @@
                                FontAttributes="Bold"
                                HorizontalOptions="Center"/>
 
-                        <CollectionView x:Name="equipoAView"
+                        <!--<CollectionView x:Name="equipoAView"
                                         HeightRequest="220">
                             <CollectionView.ItemTemplate>
                                 <DataTemplate>
@@ -126,6 +126,29 @@
                                            Margin="3"
                                            CornerRadius="10"
                                            BackgroundColor="#A5D6A7">
+                                        <Label Text="{Binding Nombre}" />
+                                    </Frame>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>-->
+                        <CollectionView x:Name="equipoAView"
+                            HeightRequest="220">
+                            <CollectionView.GestureRecognizers>
+                                <DropGestureRecognizer Drop="OnDropEquipoA" />
+                            </CollectionView.GestureRecognizers>
+
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate>
+                                    <Frame Padding="5"
+                                                Margin="3"
+                                                CornerRadius="10"
+                                                BackgroundColor="#A5D6A7">
+
+                                        <!-- DRAG -->
+                                        <Frame.GestureRecognizers>
+                                            <DragGestureRecognizer DragStarting="OnDragStarting"/>
+                                        </Frame.GestureRecognizers>
+
                                         <Label Text="{Binding Nombre}" />
                                     </Frame>
                                 </DataTemplate>
@@ -139,7 +162,7 @@
                                FontAttributes="Bold"
                                HorizontalOptions="Center"/>
 
-                        <CollectionView x:Name="equipoBView"
+                        <!--<CollectionView x:Name="equipoBView"
                                         HeightRequest="220">
                             <CollectionView.ItemTemplate>
                                 <DataTemplate>
@@ -147,6 +170,30 @@
                                            Margin="3"
                                            CornerRadius="10"
                                            BackgroundColor="#90CAF9">
+                                        <Label Text="{Binding Nombre}" />
+                                    </Frame>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>-->
+                        <CollectionView x:Name="equipoBView"
+                            HeightRequest="220">
+
+                            <CollectionView.GestureRecognizers>
+                                <DropGestureRecognizer Drop="OnDropEquipoB" />
+                            </CollectionView.GestureRecognizers>
+
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Frame Padding="5"
+                                       Margin="3"
+                                       CornerRadius="10"
+                                       BackgroundColor="#90CAF9">
+
+                                        <!-- DRAG -->
+                                        <Frame.GestureRecognizers>
+                                            <DragGestureRecognizer DragStarting="OnDragStarting"/>
+                                        </Frame.GestureRecognizers>
+
                                         <Label Text="{Binding Nombre}" />
                                     </Frame>
                                 </DataTemplate>
@@ -160,7 +207,7 @@
             
 
         </VerticalStackLayout>
-            <Button Text="📤 Compartir por WhatsApp"
+            <Button Text="📤 Compartir"
                 Clicked="OnCompartirClicked"
                 IsVisible="{Binding PuedeCompartir}" />
                     </VerticalStackLayout>
