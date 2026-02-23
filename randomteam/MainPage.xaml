@@ -1,0 +1,169 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="randomteam.MainPage"
+             BackgroundColor="LightSkyBlue">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <Label Text="⚽ Fútbol 5 Random"
+                   FontSize="26"
+                   TextColor="White"
+                   HorizontalOptions="Center"
+                   FontAttributes="Bold"/>
+
+            <Frame BackgroundColor="White" CornerRadius="15" Padding="15">
+
+                <VerticalStackLayout Spacing="10">
+
+                    <Entry x:Name="entryJugador"
+                           Placeholder="Nombre del jugador" />
+                    
+                    
+
+                    <HorizontalStackLayout HorizontalOptions="Center" Spacing="5">
+                        <!-- Texto Nivel -->
+                        <!-- Título fijo -->
+                        <Label Text="Nivel:"
+                           FontSize="14"
+                           VerticalOptions="Center"
+                           TextColor="Black"/>
+                        
+                        <Label x:Name="star1" Text="★" FontSize="28" TextColor="Gray">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnStarTapped" CommandParameter="1"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+
+                        <Label x:Name="star2" Text="★" FontSize="28" TextColor="Gray">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnStarTapped" CommandParameter="2"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+
+                        <Label x:Name="star3" Text="★" FontSize="28" TextColor="Gray">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnStarTapped" CommandParameter="3"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+
+                        <Label x:Name="star4" Text="★" FontSize="28" TextColor="Gray">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnStarTapped" CommandParameter="4"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+
+                        <Label x:Name="star5" Text="★" FontSize="28" TextColor="Gray">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnStarTapped" CommandParameter="5"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+
+                    </HorizontalStackLayout>
+
+                    <Button x:Name="btnAgregar"
+                            Text="Agregar Jugador"
+                            BackgroundColor="#2E7D32"
+                            TextColor="White"
+                            Clicked="OnAgregarJugadorClicked" />
+
+                    <Label x:Name="lblContador"
+                           Text="Jugadores: 0 / 10"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"/>
+
+                    <CollectionView x:Name="listaJugadores"
+                                    HeightRequest="120">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame Margin="4"
+                                   Padding="10"
+                                   CornerRadius="12"
+                                   BackgroundColor="#E8F5E9">
+                                    <VerticalStackLayout Spacing="4">
+                                        <Label Text="{Binding Nombre}"
+                                           FontAttributes="Bold"
+                                           FontSize="16"/>
+
+                                        <Label Text="{Binding EstrellasVisual}"
+                                           FontSize="14"
+                                           TextColor="Orange"/>
+                                    </VerticalStackLayout>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                    <Button x:Name="btnGenerar"
+                            Text="Generar Equipos"
+                            BackgroundColor="#004D40"
+                            TextColor="White"
+                            IsEnabled="False"
+                            Clicked="OnGenerarEquiposClicked" />
+
+                </VerticalStackLayout>
+
+            </Frame>
+            <VerticalStackLayout x:Name="layoutParaCompartir"
+                     Padding="20"
+                     BackgroundColor="#2E7D32">
+                <!-- EQUIPOS -->
+                <Grid ColumnDefinitions="*,*"
+                      ColumnSpacing="15">
+
+                    <VerticalStackLayout Grid.Column="0">
+                        <Label Text="🟢 Equipo A"
+                               TextColor="White"
+                               FontAttributes="Bold"
+                               HorizontalOptions="Center"/>
+
+                        <CollectionView x:Name="equipoAView"
+                                        HeightRequest="220">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Frame Padding="5"
+                                           Margin="3"
+                                           CornerRadius="10"
+                                           BackgroundColor="#A5D6A7">
+                                        <Label Text="{Binding Nombre}" />
+                                    </Frame>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Grid.Column="1">
+                        <Label Text="🔵 Equipo B"
+                               TextColor="White"
+                               FontAttributes="Bold"
+                               HorizontalOptions="Center"/>
+
+                        <CollectionView x:Name="equipoBView"
+                                        HeightRequest="220">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Frame Padding="5"
+                                           Margin="3"
+                                           CornerRadius="10"
+                                           BackgroundColor="#90CAF9">
+                                        <Label Text="{Binding Nombre}" />
+                                    </Frame>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </VerticalStackLayout>
+
+                </Grid>
+
+            
+            
+
+        </VerticalStackLayout>
+            <Button Text="📤 Compartir por WhatsApp"
+                Clicked="OnCompartirClicked"
+                IsVisible="{Binding PuedeCompartir}" />
+                    </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
