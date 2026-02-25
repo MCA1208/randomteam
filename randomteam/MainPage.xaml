@@ -101,6 +101,12 @@
                             TextColor="White"
                             IsEnabled="False"
                             Clicked="OnGenerarEquiposClicked" />
+                    <Button Text="Reiniciar"
+                            Clicked="OnReiniciarClicked"/>
+                    <Button Text="📤 Compartir"
+                            BackgroundColor="YellowGreen"
+                            Clicked="OnCompartirClicked"
+                            IsVisible="{Binding PuedeCompartir}" />
 
                 </VerticalStackLayout>
 
@@ -137,8 +143,8 @@
                                 <DropGestureRecognizer Drop="OnDropEquipoA" />
                             </CollectionView.GestureRecognizers>
 
-                                    <CollectionView.ItemTemplate>
-                                        <DataTemplate>
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
                                     <Frame Padding="5"
                                                 Margin="3"
                                                 CornerRadius="10"
@@ -200,17 +206,9 @@
                             </CollectionView.ItemTemplate>
                         </CollectionView>
                     </VerticalStackLayout>
-
                 </Grid>
-
-            
-            
-
+            </VerticalStackLayout>
         </VerticalStackLayout>
-            <Button Text="📤 Compartir"
-                Clicked="OnCompartirClicked"
-                IsVisible="{Binding PuedeCompartir}" />
-                    </VerticalStackLayout>
     </ScrollView>
 
 </ContentPage>

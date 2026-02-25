@@ -229,6 +229,30 @@ namespace randomteam
                 }
             }
         }
+        private void LimpiarTodo()
+        {
+            jugadores.Clear();
+            equipoA.Clear();
+            equipoB.Clear();
+
+            estrellasSeleccionadas = 0;
+            PintarEstrellas(0);
+
+            PuedeCompartir = false;
+
+            ActualizarContador();
+        }
+        private async void OnReiniciarClicked(object sender, EventArgs e)
+        {
+            bool confirmar = await DisplayAlert(
+                "Reiniciar",
+                "¿Querés borrar todos los jugadores y equipos?",
+                "Sí",
+                "No");
+
+            if (confirmar)
+                LimpiarTodo();
+        }
     }
 
 }
