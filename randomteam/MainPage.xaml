@@ -3,6 +3,19 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="randomteam.MainPage"
              BackgroundColor="LightSkyBlue">
+    <Grid>
+
+        <!-- Marca de agua -->
+        <Label 
+            Text="MCA"
+            FontSize="20"
+            TextColor="#003366"
+            Opacity="0.4"
+            Margin="15,10,0,0"
+            HorizontalOptions="Start"
+            VerticalOptions="Start"
+            InputTransparent="True" />
+
 
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="15">
@@ -210,5 +223,5 @@
             </VerticalStackLayout>
         </VerticalStackLayout>
     </ScrollView>
-
+    </Grid>
 </ContentPage>
