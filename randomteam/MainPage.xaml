@@ -20,7 +20,7 @@
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="15">
 
-            <Label Text="⚽ Fútbol 5 Random"
+            <Label Text="⚽ Fútbol Random"
                    FontSize="26"
                    TextColor="White"
                    HorizontalOptions="Center"
@@ -82,33 +82,55 @@
                             Clicked="OnAgregarJugadorClicked" />
 
                     <Label x:Name="lblContador"
-                           Text="Jugadores: 0 / 10"
+                           Text="Jugadores: 0"
                            FontAttributes="Bold"
                            HorizontalOptions="Center"/>
 
-                    <CollectionView x:Name="listaJugadores"
-                                    HeightRequest="120">
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate>
-                                <Frame Margin="4"
-                                   Padding="10"
-                                   CornerRadius="12"
-                                   BackgroundColor="#E8F5E9">
-                                    <VerticalStackLayout Spacing="4">
-                                        <Label Text="{Binding Nombre}"
-                                           FontAttributes="Bold"
-                                           FontSize="16"/>
+                        <CollectionView x:Name="listaJugadores"
+                            HeightRequest="200">
 
-                                        <Label Text="{Binding EstrellasVisual}"
-                                           FontSize="14"
-                                           TextColor="Orange"/>
-                                    </VerticalStackLayout>
-                                </Frame>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Frame Margin="4"
+                                       Padding="10"
+                                       CornerRadius="12"
+                                       BackgroundColor="#E8F5E9">
 
-                    <Button x:Name="btnGenerar"
+                                        <HorizontalStackLayout>
+
+                                            <VerticalStackLayout Spacing="4"
+                                            HorizontalOptions="StartAndExpand">
+
+                                                <Label Text="{Binding Nombre}"
+                                                   FontAttributes="Bold"
+                                                   FontSize="16"/>
+
+                                                <Label Text="{Binding EstrellasVisual}"
+                                                   FontSize="14"
+                                                   TextColor="Orange"/>
+
+                                            </VerticalStackLayout>
+
+                                            <Button Text="✕"
+                                                FontSize="14"
+                                                WidthRequest="28"
+                                                HeightRequest="28"
+                                                CornerRadius="14"
+                                                Padding="0"
+                                                BackgroundColor="#E53935"
+                                                TextColor="White"
+                                                Margin="10,0,0,0"
+                                                Clicked="OnEliminarJugadorClicked"
+                                                CommandParameter="{Binding .}" />
+
+                                        </HorizontalStackLayout>
+
+                                    </Frame>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+
+                        <Button x:Name="btnGenerar"
                             Text="Generar Equipos"
                             BackgroundColor="#004D40"
                             TextColor="White"
@@ -124,104 +146,96 @@
                 </VerticalStackLayout>
 
             </Frame>
-            <VerticalStackLayout x:Name="layoutParaCompartir"
+                <!-- EQUIPOS -->
+                <VerticalStackLayout x:Name="layoutParaCompartir"
                      Padding="20"
                      BackgroundColor="#2E7D32">
-                <!-- EQUIPOS -->
-                <Grid ColumnDefinitions="*,*"
-                      ColumnSpacing="15">
 
-                    <VerticalStackLayout Grid.Column="0">
-                        <Label Text="🟢 Equipo A"
-                               TextColor="White"
-                               FontAttributes="Bold"
-                               HorizontalOptions="Center"/>
+                    <Grid ColumnDefinitions="*,*"
+                        ColumnSpacing="15">
 
-                        <!--<CollectionView x:Name="equipoAView"
-                                        HeightRequest="220">
-                            <CollectionView.ItemTemplate>
-                                <DataTemplate>
-                                    <Frame Padding="5"
+                        <!-- ========================= -->
+                        <!-- 🟢 EQUIPO A -->
+                        <!-- ========================= -->
+                        <VerticalStackLayout Grid.Column="0">
+
+                            <Label Text="🟢 Equipo A"
+                   TextColor="White"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"/>
+
+                            <CollectionView x:Name="equipoAView"
+                                HeightRequest="220"
+                                BackgroundColor="Transparent">
+
+                                <CollectionView.GestureRecognizers>
+                                    <DropGestureRecognizer
+                                        AllowDrop="True"
+                                        Drop="OnDropEquipoA" />
+                                </CollectionView.GestureRecognizers>
+
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Frame Padding="5"
                                            Margin="3"
                                            CornerRadius="10"
                                            BackgroundColor="#A5D6A7">
-                                        <Label Text="{Binding Nombre}" />
-                                    </Frame>
-                                </DataTemplate>
-                            </CollectionView.ItemTemplate>
-                        </CollectionView>-->
-                        <CollectionView x:Name="equipoAView"
-                            HeightRequest="220">
-                            <CollectionView.GestureRecognizers>
-                                <DropGestureRecognizer Drop="OnDropEquipoA" />
-                            </CollectionView.GestureRecognizers>
 
-                            <CollectionView.ItemTemplate>
-                                <DataTemplate>
-                                    <Frame Padding="5"
-                                                Margin="3"
-                                                CornerRadius="10"
-                                                BackgroundColor="#A5D6A7">
+                                            <Frame.GestureRecognizers>
+                                                <DragGestureRecognizer
+                                                     DragStarting="OnDragStarting" />
+                                            </Frame.GestureRecognizers>
 
-                                        <!-- DRAG -->
-                                        <Frame.GestureRecognizers>
-                                            <DragGestureRecognizer DragStarting="OnDragStarting"/>
-                                        </Frame.GestureRecognizers>
+                                            <Label Text="{Binding Nombre}" />
+                                        </Frame>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                        </VerticalStackLayout>
 
-                                        <Label Text="{Binding Nombre}" />
-                                    </Frame>
-                                </DataTemplate>
-                            </CollectionView.ItemTemplate>
-                        </CollectionView>
-                    </VerticalStackLayout>
+                        <!-- ========================= -->
+                        <!-- 🔵 EQUIPO B -->
+                        <!-- ========================= -->
+                        <VerticalStackLayout Grid.Column="1">
 
-                    <VerticalStackLayout Grid.Column="1">
-                        <Label Text="🔵 Equipo B"
-                               TextColor="White"
-                               FontAttributes="Bold"
-                               HorizontalOptions="Center"/>
+                            <Label Text="🔵 Equipo B"
+                   TextColor="White"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"/>
 
-                        <!--<CollectionView x:Name="equipoBView"
-                                        HeightRequest="220">
-                            <CollectionView.ItemTemplate>
-                                <DataTemplate>
-                                    <Frame Padding="5"
-                                           Margin="3"
-                                           CornerRadius="10"
-                                           BackgroundColor="#90CAF9">
-                                        <Label Text="{Binding Nombre}" />
-                                    </Frame>
-                                </DataTemplate>
-                            </CollectionView.ItemTemplate>
-                        </CollectionView>-->
-                        <CollectionView x:Name="equipoBView"
-                            HeightRequest="220">
+                            <CollectionView x:Name="equipoBView"
+                                HeightRequest="220"
+                                BackgroundColor="Transparent">
 
-                            <CollectionView.GestureRecognizers>
-                                <DropGestureRecognizer Drop="OnDropEquipoB" />
-                            </CollectionView.GestureRecognizers>
+                                <CollectionView.GestureRecognizers>
+                                    <DropGestureRecognizer
+                                        AllowDrop="True"
+                                        Drop="OnDropEquipoB" />
+                                </CollectionView.GestureRecognizers>
 
-                            <CollectionView.ItemTemplate>
-                                <DataTemplate>
-                                    <Frame Padding="5"
-                                       Margin="3"
-                                       CornerRadius="10"
-                                       BackgroundColor="#90CAF9">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Frame Padding="5"
+                                               Margin="3"
+                                               CornerRadius="10"
+                                               BackgroundColor="#90CAF9">
 
-                                        <!-- DRAG -->
-                                        <Frame.GestureRecognizers>
-                                            <DragGestureRecognizer DragStarting="OnDragStarting"/>
-                                        </Frame.GestureRecognizers>
+                                            <Frame.GestureRecognizers>
+                                                <DragGestureRecognizer
+                                                    DragStarting="OnDragStarting" />
+                                            </Frame.GestureRecognizers>
 
-                                        <Label Text="{Binding Nombre}" />
-                                    </Frame>
-                                </DataTemplate>
-                            </CollectionView.ItemTemplate>
-                        </CollectionView>
-                    </VerticalStackLayout>
-                </Grid>
+                                            <Label Text="{Binding Nombre}" />
+                                        </Frame>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+
+                        </VerticalStackLayout>
+
+                    </Grid>
+                </VerticalStackLayout>
             </VerticalStackLayout>
-        </VerticalStackLayout>
     </ScrollView>
     </Grid>
 </ContentPage>

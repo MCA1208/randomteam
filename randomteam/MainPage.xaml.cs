@@ -39,15 +39,8 @@ namespace randomteam
         }
 
 
-        private async void OnAgregarJugadorClicked(object sender, EventArgs e)
+        private void OnAgregarJugadorClicked(object sender, EventArgs e)
         {
-            if (jugadores.Count >= 10)
-            {
-                await DisplayAlert("Límite alcanzado",
-                                   "Solo se permiten 10 jugadores para Fútbol 5",
-                                   "OK");
-                return;
-            }
 
             if (!string.IsNullOrWhiteSpace(entryJugador.Text))
             {
@@ -68,71 +61,84 @@ namespace randomteam
         {
             int cantidad = jugadores.Count;
 
-            lblContador.Text = $"Jugadores: {cantidad} / 10";
+            lblContador.Text = $"Jugadores: {cantidad} / Mínimo 10";
 
-            btnAgregar.IsEnabled = cantidad < 10;
-            btnGenerar.IsEnabled = cantidad == 10;
+            // Agregar SIEMPRE habilitado
+            btnAgregar.IsEnabled = true;
 
-            lblContador.TextColor = cantidad == 10
+            // Generar solo con 10 o más
+            btnGenerar.IsEnabled = cantidad >= 10;
+
+            // Color visual
+            lblContador.TextColor = cantidad >= 10
                 ? Colors.Green
-                : Colors.Black;
+                : Colors.Red;
         }
         private async void OnGenerarEquiposClicked(object sender, EventArgs e)
         {
             if (jugadores.Count < 10)
             {
-                await DisplayAlert("Error", "Necesitas al menos 10 jugadores", "OK");
+                await DisplayAlert("Mínimo requerido", "Necesitás al menos 10 jugadores", "OK");
                 return;
             }
-
-            var random = new Random();
-
-            // Mezclar primero
-            var mezclados = jugadores
-                .OrderBy(x => random.Next())
-                .OrderByDescending(x => x.Nivel) // Ordenar por nivel alto primero
-                .ToList();
 
             equipoA.Clear();
             equipoB.Clear();
 
+            int mitad = jugadores.Count / 2;
+
+            // Ordenar por nivel DESC (los mejores primero)
+            var ordenados = jugadores
+                .OrderByDescending(j => j.Nivel)
+                .ToList();
+
             int sumaA = 0;
             int sumaB = 0;
 
-            foreach (var jugador in mezclados)
+            foreach (var jugador in ordenados)
             {
-                if (equipoA.Count < 5 && (sumaA <= sumaB || equipoB.Count >= 5))
+                // Si uno ya está lleno, va al otro
+                if (equipoA.Count >= mitad)
+                {
+                    equipoB.Add(jugador);
+                    sumaB += jugador.Nivel;
+                }
+                else if (equipoB.Count >= mitad)
                 {
                     equipoA.Add(jugador);
                     sumaA += jugador.Nivel;
                 }
                 else
                 {
-                    equipoB.Add(jugador);
-                    sumaB += jugador.Nivel;
+                    // Balance por suma de nivel
+                    if (sumaA <= sumaB)
+                    {
+                        equipoA.Add(jugador);
+                        sumaA += jugador.Nivel;
+                    }
+                    else
+                    {
+                        equipoB.Add(jugador);
+                        sumaB += jugador.Nivel;
+                    }
                 }
             }
 
-            await Task.Delay(50);
+            // Animación suave
+            equipoAView.Opacity = 0;
+            equipoBView.Opacity = 0;
 
-            await MainThread.InvokeOnMainThreadAsync(async () =>
-            {
-                equipoAView.Opacity = 0;
-                equipoBView.Opacity = 0;
-
-                await Task.WhenAll(
-                    equipoAView.FadeTo(1, 400),
-                    equipoBView.FadeTo(1, 400)
-                );
-            });
+            await Task.WhenAll(
+                equipoAView.FadeTo(1, 400),
+                equipoBView.FadeTo(1, 400)
+            );
 
             PuedeCompartir = true;
 
             await DisplayAlert("Equipos generados",
-                $"Equipo A ⭐ {sumaA} vs Equipo B ⭐ {sumaB}",
+                $"🟢 Equipo A ({equipoA.Count} jugadores) ⭐ {sumaA}\n" +
+                $"🔵 Equipo B ({equipoB.Count} jugadores) ⭐ {sumaB}",
                 "OK");
-
-            
         }
         private void OnStarTapped(object sender, EventArgs e)
         {
@@ -203,29 +209,37 @@ namespace randomteam
                 e.Data.Properties.Add("Jugador", jugador);
             }
         }
+        
         private void OnDropEquipoA(object sender, DropEventArgs e)
         {
-            if (e.Data.Properties.TryGetValue("Jugador", out var item))
+            if (e.Data.Properties.ContainsKey("Jugador"))
             {
-                var jugador = item as Jugador;
+                var jugador = e.Data.Properties["Jugador"] as Jugador;
 
-                if (equipoB.Contains(jugador))
+                if (jugador != null)
                 {
-                    equipoB.Remove(jugador);
-                    equipoA.Add(jugador);
+                    if (equipoB.Contains(jugador))
+                        equipoB.Remove(jugador);
+
+                    if (!equipoA.Contains(jugador))
+                        equipoA.Add(jugador);
                 }
             }
         }
+
         private void OnDropEquipoB(object sender, DropEventArgs e)
         {
-            if (e.Data.Properties.TryGetValue("Jugador", out var item))
+            if (e.Data.Properties.ContainsKey("Jugador"))
             {
-                var jugador = item as Jugador;
+                var jugador = e.Data.Properties["Jugador"] as Jugador;
 
-                if (equipoA.Contains(jugador))
+                if (jugador != null)
                 {
-                    equipoA.Remove(jugador);
-                    equipoB.Add(jugador);
+                    if (equipoA.Contains(jugador))
+                        equipoA.Remove(jugador);
+
+                    if (!equipoB.Contains(jugador))
+                        equipoB.Add(jugador);
                 }
             }
         }
@@ -253,6 +267,21 @@ namespace randomteam
             if (confirmar)
                 LimpiarTodo();
         }
+        private void OnEliminarJugadorClicked(object sender, EventArgs e)
+        {
+            var button = sender as Button;
+            var jugador = button?.CommandParameter as Jugador;
+
+            if (jugador != null)
+            {
+                jugadores.Remove(jugador);
+
+                lblContador.Text = $"Jugadores: {jugadores.Count}";
+
+                btnGenerar.IsEnabled = jugadores.Count >= 2;
+            }
+        }
+
     }
 
 }
